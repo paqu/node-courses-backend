@@ -3,14 +3,16 @@ const http = require("http");
 const server = http.createServer((req, res) => {
   let body = [];
 
-  req
-    .on("data", (chunk) => {
-      body.push(chunk);
-    })
-    .on("end", () => {
-      body = Buffer.concat(body).toString();
-      res.end(body);
-    });
+  if (req.method === "POST" && req.url === "/echo") {
+    req
+      .on("data", (chunk) => {
+        body.push(chunk);
+      })
+      .on("end", () => {
+        body = Buffer.concat(body).toString();
+        res.end(body);
+      });
+  }
 });
 
 const PORT = 5000;
