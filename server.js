@@ -1,8 +1,16 @@
 const http = require("http");
 
 const server = http.createServer((req, res) => {
-  console.log(req.headers);
-  res.end();
+  let body = [];
+
+  req
+    .on("data", (chunk) => {
+      body.push(chunk);
+    })
+    .on("end", () => {
+      body = Buffer.concat(body).toString();
+      res.end(body);
+    });
 });
 
 const PORT = 5000;
