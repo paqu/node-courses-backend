@@ -1,20 +1,11 @@
-const http = require("http");
+const express = require("express");
+const app = express();
+const port = 5000;
 
-const server = http.createServer((req, res) => {
-  let body = [];
-
-  if (req.method === "POST" && req.url === "/echo") {
-    req
-      .on("data", (chunk) => {
-        body.push(chunk);
-      })
-      .on("end", () => {
-        body = Buffer.concat(body).toString();
-        res.end(body);
-      });
-  }
+app.get("/", (req, res) => {
+  res.send("Hello World!");
 });
 
-const PORT = 5000;
-
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`);
+});
