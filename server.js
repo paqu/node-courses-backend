@@ -1,5 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const morgan = require("morgan");
 
 dotenv.config({ path: "./config/config.env" });
 const PORT = process.env.PORT || 4000;
@@ -12,8 +13,11 @@ const bootcamps = require("./routes/bootcamps");
 
 const app = express();
 
-app.use(logger);
-app.use("/api/v1/bootcamps", bootcamps);
+// Dev loggin middleware
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
+}
+app.use("/api/v1/bootcamps/", bootcamps);
 
 app.get("/", (req, res) => {
   res.send("Hello world");
