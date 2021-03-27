@@ -1,12 +1,13 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
+const connectDB = require("./config/db");
 
 dotenv.config({ path: "./config/config.env" });
 const PORT = process.env.PORT || 4000;
 
-// Middleware
-const logger = require("./middleware/logger");
+// Connect to database
+connectDB();
 
 // Route files
 const bootcamps = require("./routes/bootcamps");
@@ -24,8 +25,15 @@ app.get("/", (req, res) => {
   res.end();
 });
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(
     `Server running in ${process.env.NODE_ENV} mode on port ${PORT}.`
   );
+});
+
+// Handle unhandled promise rejections
+process.on("unhandledRejection", (err, promise) => {
+  console.log(`Error ${err.message}`);
+  // Close server & exit process
+  server.close(() => process.exit(1));
 });
