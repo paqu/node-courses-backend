@@ -8,12 +8,9 @@ const asyncHandler = require("../middleware/async");
 exports.getCourses = asyncHandler(async (req, res, next) => {
   let query;
 
-  console.log("xx:" + req.params.bootcampId);
-
   if (req.params.bootcampId) {
     query = Course.find({ bootcamp: req.params.bootcampId });
   } else {
-    console.log("hello");
     query = Course.find();
   }
 
